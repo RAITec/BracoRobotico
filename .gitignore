@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# PlatformIO
+.pio/
+.pioenvs/
+
+# Geral
+.vscode/
+.DS_Store
+*.bin
+*.hex
