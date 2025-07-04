@@ -49,7 +49,7 @@ Com esses dados, uma instância da classe `ClienteMqtt` é criada. Em seguida, o
 **Exemplo de Uso:**
 
 ```python
-import testepython as cmqtt # Supondo que testepython é o módulo da sua classe ClienteMqtt
+import mqttClass as cmqtt # Supondo que mqttClass é o módulo da sua classe ClienteMqtt
 
 # Defina suas variáveis de conexão (idealmente em um arquivo de configuração ou variáveis de ambiente)
 BROKER_URL = "seu_broker.com"
