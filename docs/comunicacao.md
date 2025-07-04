@@ -7,7 +7,7 @@ Este documento detalha o funcionamento e o método de uso dos códigos desenvolv
 ### Sobre MQTT
 
   * [E-book MQTT Essentials (HiveMQ)](https://www.hivemq.com/downloads/hivemq-ebook-mqtt-essentials.pdf)
-  * [Playlist YouTube - MQTT Básico](https://www.google.com/search?q=https://youtu.be/bBfHV2nM_PU%3Fsi%3DpBPUnZp1d1W7jhoJ)
+  * [Playlist YouTube - MQTT Básico](https://youtu.be/bBfHV2nM_PU%3Fsi%3DpBPUnZp1d1W7jhoJ)
 
 ### Documentação e Ferramentas
 
