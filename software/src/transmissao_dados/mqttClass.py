@@ -1,17 +1,47 @@
 #!/usr/bin/env python3
 
 import logging
-logging.basicConfig(
-    level=logging.INFO, 
-    format='%(asctime)s - %(levelname)s - %(message)s', 
-    filename= '../../tables/logs.log',
-    filemode='w'
+import os
+
+# Define o diretório do módulo pai para criar caminhos relativos e portáveis.
+MODULE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Define e cria o diretório de logs, se ele não existir.
+LOG_DIR = os.path.join(MODULE_DIR, "tables")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Define o caminho completo para o arquivo de log.
+LOG_FILE = os.path.join(LOG_DIR, "logs.log")
+
+# Obtém uma instância de logger com o nome do módulo atual (__name__).
+logger = logging.getLogger(__name__)
+
+# Define o nível mínimo de severidade que o logger irá processar.
+logger.setLevel(logging.INFO)
+
+# Cria um "manipulador" (handler) que direciona os logs para o arquivo definido.
+file_handler = logging.FileHandler(LOG_FILE)
+
+# Cria um "formatador" para definir o layout de cada mensagem de log.
+# Formato: Data e Hora — Nome do Logger — Nível do Log — Mensagem
+formatter = logging.Formatter(
+    "%(asctime)s — %(name)s — %(levelname)s — %(message)s"
 )
+
+# Associa o formatador ao manipulador de arquivo.
+file_handler.setFormatter(formatter)
+
+# Verifica se o logger já possui manipuladores para evitar duplicidade de logs.
+# Se não tiver, adiciona o manipulador de arquivo configurado.
+if not logger.handlers:
+    logger.addHandler(file_handler)
+
 
 import paho.mqtt.client as mqtt
 import ssl
 from paho.mqtt.properties import Properties
 from paho.mqtt.packettypes import PacketTypes
+import queue
 
 class ClienteMqtt:
     """
@@ -28,6 +58,7 @@ class ClienteMqtt:
         self.username = username
         self.password = password
         self.keepalive = keepalive
+        self.msgs = queue.Queue()
         # self.flag = True
 
         # Inicializa o cliente Paho MQTT
@@ -56,27 +87,26 @@ class ClienteMqtt:
 
     def _on_disconnect(self, client, userdata, disc_flags, reasonCode, properties):
         """Callback interna para desconexão."""
-        print(f"[AVISO] Desconectado do broker. Código: {reasonCode}")
+        if reasonCode == 0x00:
+            logger.info("[INFO] Desconexão voluntária com sucesso.")
+            print("[INFO] Desconectado com sucesso.")
+        else:
+            logger.error(f"[ERRO] Desconexão abrupta. Reason Code = {reasonCode}")
 
     def _on_publish(self, client, userdata, mid, reason_code, properties):
         """Callback interna para publicação confirmada."""
-        logging.info(f"Publicação enviada. Message ID: {mid}")
+        logger.info(f"Publicação enviada. Message ID: {mid}")
         print(f"[SUCESSO] Publicação confirmada. Message ID: {mid}")
 
     def _on_connect_fail(self, client, userdata):
         """Callback para falha ao tentar conectar."""
-        logging.error("Falha ao tentar se conectar ao broker.")
-        print("Ocorreu um erro.")
-
-    def _on_socket_close(self, client, userdata, socket):
-        """Callback para fechamento do socket."""
-        logging.error("Socket fechado.")
+        logger.error("Falha ao tentar se conectar ao broker.")
         print("Ocorreu um erro.")
 
     def _on_message(self, client, userdata, msg):
         """Callback interno para recebimento de mensagens."""
-        print("MSG: ", msg)
-        logging.info("Mensagem recebida. Mensagem: ", msg)
+        self.msgs.put(msg)
+        logger.info(f"Mensagem recebida. Mensagem: {msg.payload.decode("utf-8")}")
 
     def _configurar_callbacks(self):
         """Define os métodos de callback para o cliente MQTT."""
@@ -85,7 +115,6 @@ class ClienteMqtt:
         self.client.on_publish = self._on_publish
         self.client.on_message = self._on_message
         self.client.on_connect_fail = self._on_connect_fail
-        self.client.on_socket_close = self._on_socket_close
 
     def conectar(self):
         """
@@ -108,6 +137,17 @@ class ClienteMqtt:
         """
         print("Desconectando do broker...")
         self.client.disconnect()
+
+    def lerMensagem(self):
+        """
+        Lê a primeira mensagem da fila vinda do broker.
+        """
+        if(self.msgs.empty()):
+            print("Fila vazia.")
+            return
+        msg = self.msgs.get()
+        print(f"A mensagem chegada ({msg.mid}) eh {msg.payload.decode("utf-8")}")
+
 
     def loop_start(self):
         """
