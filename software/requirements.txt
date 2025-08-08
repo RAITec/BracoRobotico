@@ -3,6 +3,7 @@ cffi==1.17.1
 charset-normalizer==3.4.2
 idna==3.10
 paho-mqtt==2.1.0
+PyAudio==0.2.14
 pycparser==2.22
 requests==2.32.4
 srt==3.5.3
