@@ -48,12 +48,12 @@ class ClienteMqtt:
     Uma classe para gerenciar uma conexão SEGURA com um broker MQTT,
     encapsulando a configuração, conexão, publicação e desconexão.
     """
-    def __init__(self, broker_url, username, password, client_id, keepalive=60):
+    def __init__(self, broker_url, username, password, client_id, keepalive=60, port=8883):
         """
         Inicializa o cliente MQTT com as configurações necessárias.
         """
         self.broker_url = broker_url
-        self.port = 8883
+        self.port = port
         self.client_id = client_id
         self.username = username
         self.password = password

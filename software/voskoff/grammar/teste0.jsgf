@@ -1,0 +1,13 @@
+#JSGF V1.0 UTF-8;
+grammar grammar.teste0;
+
+<cDireita> = ([cento e] quarenta);
+<cEsquerda> = (esquerda) | (direita);
+<cFrente> = (frente) {um};
+<cTras> = (cima) {1};
+<ruido> = "<unk>";
+
+
+public <comandosTestagem3> = (
+    <cDireita> | <cEsquerda>+ | <cFrente> | <cTras> | <ruido>
+);

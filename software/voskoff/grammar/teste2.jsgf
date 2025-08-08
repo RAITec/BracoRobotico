@@ -1,0 +1,42 @@
+#JSGF V1.0 UTF-8;
+grammar grammar.teste2;
+
+<unidade> = cinco;
+<zero> = zero;
+<dezena> = (dez | vinte | trinta | quarenta | cinquenta | sessenta | setenta | oitenta | noventa);
+<dezenasPrimarias> = quinze;
+<centenas_agrupadas> = cento;
+<centenas> = cem;
+<ruido> = "<unk>";
+<juncao> =  (([<centenas_agrupadas> e]  [<dezena> e] <unidade>)  | ( [<centenas_agrupadas> e] (<dezenasPrimarias> | <dezena>))  | <centenas> | <zero>);
+
+
+
+<servo> = (um | dois | três | quatro | cinco);
+
+<garra> = (pegar | fechar | abrir | largar);
+
+<pC1> = (servo | motor | mova | o);
+<pC2> = (para);
+<pC3> = (graus);
+
+public <comandosTestagem> = (S
+    (
+        <pC1>*
+        <servo>
+        [<pC2>]
+        <juncao>
+        [<pC3>]
+    )
+    |
+    (
+        <garra>
+    )
+    |
+    (
+        <ruido>
+    )
+  
+);
+
+

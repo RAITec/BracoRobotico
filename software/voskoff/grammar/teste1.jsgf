@@ -1,0 +1,15 @@
+#JSGF V1.0 UTF-8;
+grammar grammar.teste1;
+
+<unidade> = cinco;
+<zero> = zero;
+
+<dezena> = (dez | vinte | trinta | quarenta | cinquenta | sessenta | setenta | oitenta | noventa);
+<dezenasPrimarias> = quinze;
+
+
+<centenas_agrupadas> = cento;
+<centenas> = cem;
+<ruido> = "<unk>";
+
+public <juncao> =  (([<centenas_agrupadas> e]  [<dezena> e] <unidade>)  | ( [<centenas_agrupadas> e] (<dezenasPrimarias> | <dezena>))  | <centenas> | <zero> |<ruido>);
