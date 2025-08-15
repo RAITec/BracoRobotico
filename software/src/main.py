@@ -40,6 +40,7 @@ clienteMQTT = cmqtt.ClienteMqtt(
 
 try:
     clienteMQTT.conectar()
+    clienteMQTT.loop_start()
     tratar_comando = processar_testes[TESTE_ATIVO]
     recc = recVoz.ReconhecedorVoz(testeId=TESTE_ATIVO)
     recc.escutar(on_comando_reconhecido=comando_servo, tratam_dados=tratar_comando)
