@@ -6,7 +6,7 @@
 
 O objetivo deste documento é implementar o Módulo de Interface Gráfica com a funcionalidade de uma aplicação que facilite as testagens e implementações do software do projeto do braço robótico, desenvolvido no ano de 2025, por meio da **Kivy**, uma biblioteca Python de código aberto usada para criar interfaces gráficas (GUIs) para aplicativos desktop e móveis que rodam em diversas plataformas, como Windows, macOS, Linux, Android e iOS. A necessidade de se criar esse app, surgiu para diminuir a poluição visual causada ao acessar IDEs como o VScode para rodar o código de reconhecimento de voz e da comunicação, bem como ter uma interface mais acessível para quem for usar o braço robótico.
 
-Para mais informações sobre as funcionalidades da Kivy bem como guias de programação e exemplos, acesse o site oficial clicando [aqui](https://kivy.org/doc/stable/).
+Para mais informações sobre as funcionalidades da Kivy bem como guias de programação e exemplos, acesse: [site oficial do KIVY](https://kivy.org/doc/stable/).
 
 ## 2. Arquitetura do sistema
 
@@ -20,9 +20,7 @@ Para mais informações sobre as funcionalidades da Kivy bem como guias de progr
 
 ## 3. Requisitos e configuração do ambiente
 
-Antes de iniciar a criação e em si do aplicativo, iremos presumir que você já tenha acesso aos códigos e instalações específicas dos outros módulos, caso não, pode encontrá-los aqui:
-
-[O repositório do braço robótico](https://github.com/RAITA-UFC/BracoRobotico).
+Antes de iniciar a criação e em si do aplicativo, iremos presumir que você já tenha acesso aos códigos e instalações específicas dos outros módulos, esses se encontrão nesse repositório.
 
 Entretanto podemos fazer um resumo rápido do que se precisa para o nosso app funcionar já que o foco aqui não é instalar as ferramentas dos outros módulos.
 
