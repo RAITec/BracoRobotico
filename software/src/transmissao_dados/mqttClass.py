@@ -73,7 +73,8 @@ class ClienteMqtt:
 
         # Configura autenticação e TLS
         self.client.username_pw_set(username=self.username, password=self.password)
-        self.client.tls_set(tls_version=ssl.PROTOCOL_TLS)
+        if self.port == 8883:
+            self.client.tls_set(tls_version=ssl.PROTOCOL_TLS)
 
         # Configura a reconexão automática
         self.client.reconnect_delay_set(min_delay=1, max_delay=120)
