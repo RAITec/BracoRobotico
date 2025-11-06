@@ -24,11 +24,12 @@ def comando_servo(payload: str):
     """
     clienteMQTT.publicar(MQTT_TOPIC, payload)
 
-BROKER_URL = "5b7bc54bc63a4ffd9ddc2fa23cf8fa44.s1.eu.hivemq.cloud"
-USERNAME = "filipeaufc"
-PASSWORD = "Tdmndmslgr1"
+BROKER_URL = "5b7bc54bc63a4ffd9ddc2fa23cf8fa44.s1.eu.hivemq.cloud" # Não mais ativo
+USERNAME = "filipeaufc" # Servidor online não mais ativo. É necessário criar um próprio
+PASSWORD = "Tdmndmslgr1" # Existem diversas opções para servidor online gratuitas. HiveMQ é a opção que utilizamos
 CLIENT_ID = "filipeeac_classe" # Cliente arbitrário
 KEEPALIVE = 60
+PORT = 8883 # Apesar que o valor default para port já é 8883, a definição explícita padroniza o uso
 
 clienteMQTT = cmqtt.ClienteMqtt(
         broker_url=BROKER_URL,
@@ -36,6 +37,7 @@ clienteMQTT = cmqtt.ClienteMqtt(
         password=PASSWORD,
         client_id=CLIENT_ID,
         keepalive=KEEPALIVE
+        port=PORT
     )
 
 try:
