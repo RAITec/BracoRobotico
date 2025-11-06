@@ -1,0 +1,16 @@
+#JSGF V1.0 UTF-8;
+grammar grammar.teste3;
+
+<cDireita> = (direita);
+<cEsquerda> = (esquerda);
+<cFrente> = (frente);
+<cTras> = (trás);
+<cCima> = (cima);
+<cBaixo> = (baixo);
+<garra> = (pegar | fechar | abrir | largar);
+<ruido> = "<unk>";
+
+
+public <comandosTestagem3> = (
+    <cBaixo> | <cCima> | <cDireita> | <cEsquerda> | <cFrente> | <cTras> | <garra> | <ruido>
+);

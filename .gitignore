@@ -14,3 +14,4 @@ env/
 .DS_Store
 *.bin
 *.hex
+*.log

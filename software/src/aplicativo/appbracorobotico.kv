@@ -1,0 +1,43 @@
+#:kivy 2.2.1
+
+<RootWidget>:
+    orientation: 'vertical'
+    padding: dp(25)
+    spacing: dp(20)
+
+    # Não precisamos mais do canvas aqui, pois a cor de fundo
+    # foi definida no app.py com Window.clearcolor
+
+    Label:
+        text: "Controle do Braço Robótico"
+        font_size: '32sp'
+        size_hint_y: 0.2
+        bold: True
+        color: (0.8, 0.8, 1, 1) # Cor de texto levemente azulada
+
+    Label:
+        id: rotulo_status
+        text: "Aguardando inicialização..."
+        font_size: '20sp'
+        size_hint_y: 0.15
+        color: (0.9, 0.9, 0.9, 1)
+
+    Button:
+        id: botao_falar
+        text: 'Pressione para Falar'
+        font_size: '24sp'
+        size_hint_y: 0.65
+        bold: True
+        color: (1, 1, 1, 1)
+        
+        # Cor de fundo com gradiente sutil
+        background_color: (0, 0, 0, 0) # Fundo transparente para o canvas funcionar
+        canvas.before:
+            Color:
+                rgba: (0.4, 0.4, 0.9, 1) if self.state == 'normal' else (0.3, 0.3, 0.7, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [15]
+        
+        on_press: app.iniciar_fluxo_de_voz()
