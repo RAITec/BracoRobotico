@@ -78,6 +78,7 @@ pip install kivy
 ```
 
 Sendo o vosk para reconhecimento de voz, o paho-mqtt para a transmissão de dados e o kivy para o aplicativo.
+> OBS: A instalação das dependências também podem ser feitas usando `pip install -r requerements.txt` que está presente na pasta software do repositório.
 
 ## 4. Estrutura Básica de um App Kivy
 
