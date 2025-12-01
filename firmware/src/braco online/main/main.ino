@@ -1,44 +1,36 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
-#include <LittleFS.h>
 #include <time.h>
 #include "braco.h"
 #include "decoder.h"
 #include <utility>
 
-
-static const char ROOT_CA_PEM[] PROGMEM = R"EOF(
+// É NECESSÁRIO MUDAR O CERTIFICADO A DEPENDER DO SERVER UTILIZADO! USAR TLS É UM SACO
+static const char ROOT_CA_PEM[]= R"EOF(
 -----BEGIN CERTIFICATE-----
-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
+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
+m/XriWr/Cq4h/JfB7NTsezVslgkBaoU=
 -----END CERTIFICATE-----
 )EOF";
 
@@ -46,19 +38,18 @@ emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 //configurando servo
 braco braco1;
 
-// Update these with values suitable for your network and HiveMQ cluster
-const char* ssid = "Gustaco"; // mudar
-const char* password = "987654321"; // mudar
-const char* mqtt_server = "e4436b8953fb47e6a538fd635408a0f3.s1.eu.hivemq.cloud";
+const char* ssid = "wifi_ssid"; // mudar
+const char* password = "wifi_password"; // mudar
+const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 8883;
 
 WiFiClientSecure secureClient;
 PubSubClient client(secureClient);
 
-// NTP settings
+// Configuração NTP
 const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = -3 * 3600;           // adjust to your timezone in seconds
-const int   daylightOffset_sec = 0;       // adjust if daylight savings
+const long  gmtOffset_sec = -3 * 3600;           // Não mexa
+const int   daylightOffset_sec = 0;       
 
 unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE  (500)
@@ -72,30 +63,35 @@ void setup() {
   //inicializando braço
   braco1.attach_pin(13, 2, 12, 18, 15, 19);
 
-  // Connect to WiFi
-  Serial.printf("Connecting to %s", ssid);
+  // Conexão com WiFi
+  Serial.printf("Conectando a %s", ssid);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print('.');
   }
-  Serial.println("\nWiFi connected");
-  Serial.print("IP address: ");
+  Serial.println("\nWiFi conectado");
+  Serial.print("IP addr: ");
   Serial.println(WiFi.localIP());
 
-  // Configure time via NTP
+  // Configuração de hora via NTP
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  Serial.print("Esperando sincronização...");
+  Serial.print("Esperando sincronização NTP");
   time_t now = time(nullptr);
-  while (now < 8 * 3600 * 2) {
-    Serial.print('.');
+  unsigned long tstart = millis();
+  while (now < 1600000000 && millis() - tstart < 20000) { // espera até timestamp razoável ou 20s timeout
+    Serial.print(".");
     delay(500);
     now = time(nullptr);
   }
   Serial.println();
-  struct tm timeinfo;
-  gmtime_r(&now, &timeinfo);
-  Serial.printf("Hora atual: %s", asctime(&timeinfo));
+  if (now < 1600000000) {
+    Serial.println("Aviso: hora NTP não sincronizada (timeout). A validação do certificado pode falhar.");
+  } else {
+    struct tm timeinfo;
+    gmtime_r(&now, &timeinfo);
+    Serial.printf("Hora atual: %s", asctime(&timeinfo));
+  }
 
 
   secureClient.setCACert(ROOT_CA_PEM);
@@ -104,7 +100,7 @@ void setup() {
 }
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
-  Serial.printf("Message arrived [%s]: ", topic);
+  Serial.printf("Mensagem recebida [%s]: ", topic);
   String msg;
  
   //obtem a string do payload recebido
@@ -119,21 +115,19 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
     braco1.comando(msg);
   }
   delay(1000);
-
-  // Toggle on-board LED if payload non-empty
 }
 
- //"filipeaufc", "Tdmndmslgr1"
 
 void reconnect() {
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    Serial.print("Tentando conexão MQTT...");
     String clientId = "ESP32Client-" + String(random(0xffff), HEX);
-    if (client.connect(clientId.c_str(), "raitecBraco", "Raitec.braco1")) {
-      Serial.println("connected");
-      client.subscribe("braco/comando");
+    // if (client.connect(clientId.c_str(), "raitecBraco", "Raitec.braco1")) { ---> para conexão com autenticação, mudar os valores com usuario e senha, respectivamente
+    if (client.connect(clientId.c_str())) {
+      Serial.println("conectado");
+      client.subscribe("ufc/raitec/braco/comando");
     } else {
-      Serial.printf("failed, rc=%d, retrying in 5s\n", client.state());
+      Serial.printf("falhou, rc=%d, tentando de novo em 5s\n", client.state());
       delay(5000);
     }
   }
@@ -145,6 +139,4 @@ void loop() {
   }
   client.loop();
 }
-
-
 
