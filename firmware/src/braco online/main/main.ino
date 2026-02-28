@@ -38,8 +38,8 @@ m/XriWr/Cq4h/JfB7NTsezVslgkBaoU=
 //configurando servo
 braco braco1;
 
-const char* ssid = "wifi_ssid"; // mudar
-const char* password = "wifi_password"; // mudar
+const char* ssid = "Gustavo"; // muda leozin tenebrasr
+const char* password = "987654321"; // mudar turcomenistao
 const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 8883;
 
@@ -57,11 +57,11 @@ char msg[MSG_BUFFER_SIZE];
 int value = 0;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   delay(100);
 
   //inicializando braço
-  braco1.attach_pin(13, 2, 12, 18, 15, 19);
+  braco1.attach_pin(15, 2, 19, 13, 18, 12);
 
   // Conexão com WiFi
   Serial.printf("Conectando a %s", ssid);

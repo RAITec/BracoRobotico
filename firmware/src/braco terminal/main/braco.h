@@ -14,6 +14,7 @@ class braco{
     void comando(String msg);
     int garra(int num_servo, int angulo);
     void posicao_geral();
+    void posica_especifica(int ang0, int ang1, int ang2, int ang3, int ang4, int ang5);
 };
 
 

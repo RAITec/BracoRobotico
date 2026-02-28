@@ -5,7 +5,7 @@
 braco braco1;
 
 void setup() {
-  braco1.attach_pin(13, 12, 15, 2, 18, 19);
+  braco1.attach_pin(15, 2, 19, 13, 18, 12);
 
   Serial.begin(9600);
   Serial.println("configuracoes prontas");

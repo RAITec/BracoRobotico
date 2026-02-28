@@ -5,6 +5,8 @@
 
 ServoEasing servo[6];
 std::pair<int, int> limites[6];
+int pos_inicial[6] = {110, 170, 100, 60, 0, 18 };
+int peca[6] = {80, 150, 60, 15, 0, 68};
 
 /*
 limites
@@ -32,7 +34,7 @@ void braco::attach_pin(int pin0, int pin1, int pin2, int pin3, int pin4, int pin
   //configurando servo 2 - problema
   servo[2].attach(pin2);
   servo[2].setEasingType(EASE_QUADRATIC_OUT);
-  servo[2].setSpeed(110);
+  servo[2].setSpeed(90);
   limites[2] = std::make_pair(0, 180);
 
   //configurando servo 3
@@ -102,6 +104,14 @@ void braco::comando(String msg){
     Serial.println("mensagem invalida");
     return;
   }
+  if(comando.first == 3 && comando.second == 180){
+    this->posica_especifica(pos_inicial[0], pos_inicial[1], pos_inicial[2], pos_inicial[3], pos_inicial[4], pos_inicial[5]);
+    return;
+  }
+  if(comando.first == 3 && comando.second == 170){
+    this->posica_especifica(peca[0], peca[1], peca[2], peca[3], peca[4], peca[5]);
+    return;
+  }
   comando.second = this->garra(comando.first, comando.second);
   comando.second = this->limite(comando.first, comando.second);
   this->exec_comand(comando.first, comando.second);
@@ -117,6 +127,20 @@ void braco::posicao_geral(){
     Serial.print(":");
     Serial.println(this->get_posicao(i));
   }
+}
+
+void braco::posica_especifica(int ang0, int ang1, int ang2, int ang3, int ang4, int ang5){
+
+  this->exec_comand(0, ang0);
+  delay(400);
+  this->exec_comand(1, ang1);
+  delay(400);
+  this->exec_comand(2, ang2);
+  delay(400);
+   this->exec_comand(3, ang3);
+  delay(400);
+   this->exec_comand(4, ang4);
+  delay(400);
 }
 
 

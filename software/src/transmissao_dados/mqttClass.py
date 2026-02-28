@@ -10,6 +10,8 @@ MODULE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__f
 LOG_DIR = os.path.join(MODULE_DIR, "tables")
 os.makedirs(LOG_DIR, exist_ok=True)
 
+CERTS_PATH = os.path.join(os.path.join(LOG_DIR, "certs"), "mosquitto.org.crt")
+
 # Define o caminho completo para o arquivo de log.
 LOG_FILE = os.path.join(LOG_DIR, "logs.log")
 
@@ -72,9 +74,13 @@ class ClienteMqtt:
         self._configurar_callbacks()
 
         # Configura autenticação e TLS
-        self.client.username_pw_set(username=self.username, password=self.password)
+        if self.broker_url != "test.mosquitto.org":
+            self.client.username_pw_set(username=self.username, password=self.password)
         if self.port == 8883:
-            self.client.tls_set(tls_version=ssl.PROTOCOL_TLS)
+            if self.broker_url == "test.mosquitto.org":
+                self.client.tls_set(ca_certs=CERTS_PATH)
+            else:
+                self.client.tls_set(tls_version=ssl.PROTOCOL_TLS)
 
         # Configura a reconexão automática
         self.client.reconnect_delay_set(min_delay=1, max_delay=120)

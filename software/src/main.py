@@ -16,7 +16,7 @@ processar_testes = {
 TESTE_ATIVO = 2
 # Verificar se o tópico utilizado bate com o tópico em que a ESP32 está se inscrevendo.
 # Caso não esteja, modifique preferencialmente aqui
-MQTT_TOPIC = f"mqtt/teste{TESTE_ATIVO}"
+MQTT_TOPIC = f"ufc/raitec/braco/comando"
 
 def comando_servo(payload: str):
     """
